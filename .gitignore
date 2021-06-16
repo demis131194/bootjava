@@ -1,7 +1,7 @@
 HELP.md
 /target/
 /patch/
-/rest/
+/temp/
 ### IntelliJ IDEA ###
 .idea
 *.iws
