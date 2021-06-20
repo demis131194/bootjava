@@ -1,6 +1,7 @@
 package ru.javaops.bootjava.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import lombok.experimental.UtilityClass;
@@ -19,6 +20,12 @@ public class JsonUtil {
     public static <T> List<T> readValues(String json, Class<T> clazz) throws IOException {
         ObjectReader reader = objectMapper.readerFor(clazz);
         return reader.<T>readValues(json).readAll();
+    }
+
+    public static <T> List<T> readValuesFromHal(String json, Class<T> clazz, String nodeName) throws IOException {
+        ObjectReader reader = objectMapper.readerFor(clazz);
+        JsonNode usersNode = objectMapper.readTree(json).get("_embedded").get(nodeName);
+        return reader.<T>readValues(usersNode.toString()).readAll();
     }
 
     public static <T> T readValue(String json, Class<T> clazz) throws JsonProcessingException {

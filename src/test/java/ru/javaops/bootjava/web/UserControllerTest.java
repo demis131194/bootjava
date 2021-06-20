@@ -11,6 +11,8 @@ import ru.javaops.bootjava.UserTestUtil;
 import ru.javaops.bootjava.model.User;
 import ru.javaops.bootjava.repository.UserRepository;
 
+import java.util.List;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,11 +38,11 @@ class UserControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void getAll() throws Exception {
-        // TODO check content yourself
         perform(MockMvcRequestBuilders.get(URL))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaTypes.HAL_JSON_VALUE));
+                .andExpect(content().contentTypeCompatibleWith(MediaTypes.HAL_JSON_VALUE))
+                .andExpect(jsonMatcher(List.of(user, admin), UserTestUtil::assertNoIdEquals));
     }
 
     @Test
